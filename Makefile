@@ -12,12 +12,12 @@ LDFLAGS=-nostdlib \
         -lc -lgcc -lhal -lphy -lpp -lnet80211 -llwip -lwpa -lmain -ljson -lupgrade -lssl \
         -lpwm -lsmartconfig -Wl,--end-group
 
-all: $(PROJ_NAME)_0x00000.bin
+all: $(PROJ_NAME)_full.bin
 
 $(PROJ_NAME).out: $(OBJS)
 	$(CC) -o $(PROJ_NAME).out $(LDFLAGS) $(OBJS)
 
-$(PROJ_NAME)_0x00000.bin: $(PROJ_NAME).out
+$(PROJ_NAME)_full.bin: $(PROJ_NAME).out
 	$(ESPTOOL) elf2image --output ${PROJ_NAME}- $^
 
 .c.o:
@@ -27,4 +27,4 @@ clean:
 	rm -f $(PROJ_NAME).out *.o *.bin
 
 flash: all
-	esptool.py --baud 230400 write_flash 0x00000 $(PROJ_NAME)-0x00000.bin 0x10000 $(PROJ_NAME)-0x10000.bin 
+	esptool.py --baud 921600 write_flash 0x00000 $(PROJ_NAME)-0x00000.bin 0x10000 $(PROJ_NAME)-0x10000.bin 
